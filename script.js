@@ -2,9 +2,15 @@ const form = document.getElementById('volunteerForm');
 const formMessage = document.getElementById('formMessage');
 const volunteerCountElement = document.getElementById('volunteerCount');
 const savedNotice = document.getElementById('savedNotice');
+const savedDetails = document.getElementById('savedDetails');
+const introScreen = document.querySelector('.intro-screen');
+const enterSiteButton = document.getElementById('enterSiteButton');
+const quizForm = document.getElementById('quizForm');
+const quizResult = document.getElementById('quizResult');
 
 const STORAGE_KEY = 'volunteerRegistration';
 const COUNT_KEY = 'volunteerCount';
+let currentSavedRegistration = null;
 
 function getSavedRegistration() {
   try {
@@ -24,10 +30,49 @@ function updateCountDisplay() {
 
 function showSavedNotice(registration) {
   if (registration && registration.nome) {
-    savedNotice.textContent = `Bem-vindo de volta, ${registration.nome}! Sua inscrição anterior foi carregada.`;
+    savedNotice.textContent = 'Inscrição salva. Comece a digitar igual ao último cadastro para ver o histórico.';
   } else {
     savedNotice.textContent = 'Nenhuma inscrição salva ainda. Preencha o formulário para participar.';
   }
+}
+
+function isPrefixMatch(value, savedValue) {
+  const typed = String(value).trim().toLowerCase();
+  const saved = String(savedValue || '').trim().toLowerCase();
+  return typed.length > 0 && saved.startsWith(typed);
+}
+
+function handleFormHistoryInput() {
+  if (!currentSavedRegistration) {
+    savedDetails.textContent = '';
+    return;
+  }
+
+  const matched =
+    isPrefixMatch(form.nome.value, currentSavedRegistration.nome) ||
+    isPrefixMatch(form.idade.value, currentSavedRegistration.idade) ||
+    isPrefixMatch(form.email.value, currentSavedRegistration.email) ||
+    isPrefixMatch(form.interesse.value, currentSavedRegistration.interesse);
+
+  if (matched) {
+    displaySavedDetails(currentSavedRegistration);
+  } else {
+    savedDetails.textContent = '';
+  }
+}
+
+function displaySavedDetails(registration) {
+  if (!registration || !registration.nome) {
+    savedDetails.textContent = '';
+    return;
+  }
+
+  savedDetails.innerHTML = `
+    <p>Nome: ${registration.nome}</p>
+    <p>Idade: ${registration.idade}</p>
+    <p>E-mail: ${registration.email}</p>
+    <p>Por que quer participar: ${registration.interesse}</p>
+  `;
 }
 
 function fillFormWithSavedData(registration) {
@@ -58,26 +103,67 @@ form.addEventListener('submit', function (event) {
     inscritoEm: new Date().toLocaleDateString('pt-BR'),
   };
 
+  const previousRegistration = getSavedRegistration();
   saveRegistration(registration);
 
-  const storedRegistration = getSavedRegistration();
-  if (!storedRegistration || storedRegistration.email !== registration.email) {
+  if (!previousRegistration || previousRegistration.email !== registration.email) {
     incrementVolunteerCount();
   }
 
   updateCountDisplay();
   showSavedNotice(registration);
+  currentSavedRegistration = registration;
+  displaySavedDetails(registration);
+  form.reset();
   formMessage.textContent = `Obrigado, ${registration.nome}! Sua inscrição foi salva com sucesso.`;
   formMessage.style.color = '#005cbf';
 });
 
 window.addEventListener('DOMContentLoaded', function () {
   const saved = getSavedRegistration();
-  fillFormWithSavedData(saved);
+  currentSavedRegistration = saved;
   updateCountDisplay();
   showSavedNotice(saved);
   attachInteractionHandlers();
+
+  if (enterSiteButton) {
+    enterSiteButton.addEventListener('click', function () {
+      if (introScreen) {
+        introScreen.classList.add('intro-hidden');
+      }
+    });
+  }
+
+  if (quizForm) {
+    quizForm.addEventListener('submit', handleQuizSubmit);
+  }
 });
+
+function handleQuizSubmit(event) {
+  event.preventDefault();
+
+  const answers = new FormData(quizForm);
+  const correct = {
+    q1: 'b',
+    q2: 'c',
+    q3: 'a',
+  };
+
+  let score = 0;
+  for (const key of Object.keys(correct)) {
+    if (answers.get(key) === correct[key]) {
+      score += 1;
+    }
+  }
+
+  const message = score === 3
+    ? 'Parabéns! Você acertou todas as perguntas.'
+    : `Você acertou ${score} de 3. Continue aprendendo sobre o projeto e a conservação ambiental.`;
+
+  if (quizResult) {
+    quizResult.textContent = message;
+  }
+}
 
 function attachInteractionHandlers() {
   const buttons = Array.from(document.querySelectorAll('.btn'));
@@ -89,6 +175,14 @@ function attachInteractionHandlers() {
     btn.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') createRipple(e);
     });
+  });
+
+  // Reveal saved history when typing the same text as last registration
+  ['nome', 'idade', 'email', 'interesse'].forEach(fieldName => {
+    const field = form[fieldName];
+    if (field) {
+      field.addEventListener('input', handleFormHistoryInput);
+    }
   });
 
   // Hero parallax movement (subtle)

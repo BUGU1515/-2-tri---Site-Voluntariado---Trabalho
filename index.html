@@ -4,18 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Paulo de Tarso Verde e Solidário</title>
+  <link rel="icon" href="colpaulotarso-logo-og.png" type="image/png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="hero" id="hero">
-    <div class="hero-copy">
-      <p class="tag">Projeto voluntário da Escola Paulo de Tarso</p>
-      <h1>Paulo de Tarso Verde e Solidário</h1>
-      <p class="hero-text">Juntos, plantamos cuidado e futuro para a nossa escola e comunidade.</p>
-      <a href="#formulario" class="btn btn-primary">Quero ser voluntário</a>
+  <div class="intro-screen">
+    <div class="intro-panel">
+      <div class="intro-copy">
+        <p class="tag">Projeto voluntário da Escola Paulo de Tarso</p>
+        <h2>Paulo de Tarso Verde e Solidário</h2>
+        <p class="hero-text">Juntos, plantamos cuidado e futuro para a nossa escola e comunidade.</p>
+      </div>
+      <div class="intro-logo">
+        <img src="colpaulotarso-logo-og.png" alt="Logo da Escola Paulo de Tarso">
+      </div>
     </div>
-    <div class="hero-image">
-      <img src="colpaulotarso-logo-og.png" alt="Logo da Escola Paulo de Tarso">
+    <div class="intro-actions">
+      <button id="enterSiteButton" class="btn btn-primary">Entrar no site</button>
+    </div>
+  </div>
+  <header class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-copy">
+        <p class="tag">Projeto voluntário da Escola Paulo de Tarso</p>
+        <h1>Paulo de Tarso Verde e Solidário</h1>
+        <p class="hero-text">Juntos, plantamos cuidado e futuro para a nossa escola e comunidade.</p>
+      </div>
+      <div class="hero-image">
+        <img src="colpaulotarso-logo-og.png" alt="Logo da Escola Paulo de Tarso">
+      </div>
+    </div>
+    <div class="hero-actions">
+      <nav class="hero-nav" aria-label="Navegação interna do site">
+        <a href="#hero" class="btn btn-nav">Início</a>
+        <a href="#ano-voluntariado" class="btn btn-nav">Ano do voluntariado</a>
+        <a href="#tema-causa" class="btn btn-nav">Tema da causa</a>
+        <a href="#projeto-concreto" class="btn btn-nav">Projeto</a>
+        <a href="#formulario" class="btn btn-nav">Inscrição</a>
+        <a href="#desenvolvedor" class="btn btn-nav">Desenvolvedor</a>
+      </nav>
+      <a href="#formulario" class="btn btn-primary">Quero ser voluntário</a>
     </div>
   </header>
 
@@ -98,6 +126,8 @@
           <p>Sábado, 20 de setembro de 2026</p>
           <p>08:00 às 12:00 e 13:00 às 16:00</p>
         </div>
+      </div>
+      <div class="project-bottom">
         <div class="project-full">
           <h3>O que os voluntários farão na prática</h3>
           <ul>
@@ -138,12 +168,48 @@
       <div class="registration-info">
         <p>Inscrições salvas: <strong id="volunteerCount">0</strong></p>
         <p id="savedNotice"></p>
+        <div id="savedDetails" class="saved-details"></div>
       </div>
+    </section>
+
+    <section class="quiz-section" id="quiz">
+      <div class="section-header">
+        <span class="section-number">5</span>
+        <h2>Quiz de conhecimento</h2>
+      </div>
+      <form id="quizForm" class="quiz-form">
+        <div class="quiz-question">
+          <p><strong>1. O que é voluntariado ambiental?</strong></p>
+          <div class="quiz-options">
+            <label><input type="radio" name="q1" value="a" required> Receber pagamento para trabalhar em projetos ambientais.</label>
+            <label><input type="radio" name="q1" value="b"> Ajudar a cuidar do ambiente sem receber pagamento.</label>
+            <label><input type="radio" name="q1" value="c"> Apenas plantar árvores em parques públicos.</label>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>2. Qual das opções é parte do projeto Paulo de Tarso?</strong></p>
+          <div class="quiz-options">
+            <label><input type="radio" name="q2" value="a"> Organizar uma festa escolar.</label>
+            <label><input type="radio" name="q2" value="b"> Construir ginásios esportivos.</label>
+            <label><input type="radio" name="q2" value="c"> Coleta seletiva, compostagem e horta pedagógica.</label>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>3. Qual benefício a educação ambiental traz para a escola?</strong></p>
+          <div class="quiz-options">
+            <label><input type="radio" name="q3" value="a" required> Melhora do cuidado com espaços comuns e redução de resíduos.</label>
+            <label><input type="radio" name="q3" value="b"> Aumento do consumo de plástico.</label>
+            <label><input type="radio" name="q3" value="c"> Menos atividades ao ar livre.</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-secondary">Enviar respostas</button>
+      </form>
+      <div id="quizResult" class="quiz-result"></div>
     </section>
 
     <section class="developer-section" id="desenvolvedor">
       <div class="section-header">
-        <span class="section-number">5</span>
+        <span class="section-number">6</span>
         <h2>Desenvolvedor do site</h2>
       </div>
       <div class="developer-grid">
@@ -154,6 +220,7 @@
             <p>Nome do aluno: Júlio Alonso</p>
             <p>Turma: 2° Médio Tec</p>
             <p>Tecnologias usadas: HTML, CSS e JavaScript puro</p>
+            <p>GitHub: <strong><a class="github-link" href="https://github.com/BUGU1515" target="_blank" rel="noreferrer">github.com/BUGU1515</a></strong></p>
           </div>
         </div>
         <div>
